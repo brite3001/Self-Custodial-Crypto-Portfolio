@@ -1,0 +1,52 @@
+# addresses for the tokens on each blockchain and L2
+addresses:
+  ethereum: "xxx"
+  polygon: "xxx"
+  optimism: "xxx"
+  arbitrum: "xxx"
+  decred: "xxx"
+  solana: "xxx"
+  algorand: "xxx"
+  bitcoin: "xxx"
+
+# API keys for each block explorer
+api_keys:
+  ethereum: "xxx"
+  polygon: "xxx"
+  optimism: "xxx"
+  arbitrum: "xxx"
+
+# Arbitrum Tokens
+arbitrum_Whitelist:
+  "Wrapped BTC": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f"
+  "Arbitrum": "0x912CE59144191C1204E64559FE8253a0e49E6548"
+  "GMX": "0xfc5A1A6EB076a2C7aD06eD22C90d7E710E35ad0a"
+  "Uniswap": "0xFa7F8980b0f1E64A2062791cc3b0871572f1F7f0"
+
+  # Ethereum Tokens
+ethereum_whitelist:
+  "OMG Network": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07"
+  "EnjinCoin": "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c"
+  "PYR Token": "0x430EF9263E76DAE63c84292C3409D61c598E9682"
+  "Axie Infinity Shard": "0xBB0E17EF65F82Ab018d8EDd776e8DD940327B28b"
+  "LoopringCoin V2": "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD"
+  "Immutable X": "0xF57e7e7C23978C3cAEC3C3548E3D615c346e79fF"
+
+# Optimism Tokens
+optimism_whitelist:
+  "Optimism": "0x4200000000000000000000000000000000000042"
+
+# Polygon Tokens
+polygon_whitelist:
+  "Aave (PoS)": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B"
+  "Synthetix Network Token (PoS)": "0x50B728D8D964fd00C2d0AAD81718b71311feF68a"
+  "Decentraland": "0xA1c57f48F0Deb89f569dFbE6E2B7f46D33606fD4"
+  "(PoS) Wrapped BTC": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6"
+
+
+allocations:
+  "Solana": 0
+  "Algorand": 0
+  "Monero": 20
+  "Bitcoin": 6
+

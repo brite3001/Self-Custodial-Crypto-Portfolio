@@ -1,0 +1,18 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "brite3000", email = "zac@auhl.dev"},
+]
+dependencies = [
+    "coloredlogs>=15.0.1",
+    "pycoingecko>=3.1.0",
+    "PyYAML>=6.0.1",
+    "pandas>=2.1.3",
+    "matplotlib>=3.8.2",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "GPLv3"}
+
