@@ -7,6 +7,8 @@ from block_explorer_apis import (
     solana,
     algorand,
     bitcoin,
+    flux,
+    wax,
 )
 
 import coingecko
@@ -42,12 +44,11 @@ def main():
         "Solana": solana.get_solana_balance(config),
         "Algorand": algorand.get_algorand_balance(config),
         "Bitcoin": bitcoin.get_bitcoin_balance(config),
+        "Flux": flux.get_flux_balance(config),
+        "Wax": wax.get_wax_balance(config),
         "Monero": {"Monero": 36.5},
         "Beam": {"Beam": 19760},
-        # ADD ICP SUPPORT!
-        # ADD FLUX SUPPORT!
-        # DEL PYR
-        # ADD WAXP SUPPORT!
+        "Internet Computer": {"Internet Computer": 225.55},
     }
 
     tokens = []

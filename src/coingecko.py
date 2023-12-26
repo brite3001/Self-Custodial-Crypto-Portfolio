@@ -11,6 +11,8 @@ translations = {
     "Wrapped BTC": "wrapped-btc-trustless-bridge",
     "OMG Network": "omisego",
     "Immutable X": "immutable-x",
+    "Flux": "zelcash",
+    "Internet Computer": "internet-computer",
 }
 
 
@@ -60,7 +62,7 @@ def reverse_translation(tokens: dict) -> dict:
 
     # Flatten remaining price dicts
     for token_name, price in tokens.items():
-        if type(price) is dict:
+        if isinstance(price, dict):
             tokens[token_name] = tokens[token_name]["usd"]
 
     # Fix unique token names
@@ -69,6 +71,8 @@ def reverse_translation(tokens: dict) -> dict:
         "Enjincoin": "EnjinCoin",
         "Aave (Pos)": "Aave (PoS)",
         "Gmx": "GMX",
+        "uniswap": "Uniswap",
+        "wax": "Wax",
     }
 
     for wrong_token_format, correct_token_format in unique_names.items():
@@ -93,5 +97,5 @@ def get_prices(tokens: list) -> dict:
     return prices_translated
 
 
-# print(cg.get_price(ids="havven", vs_currencies="usd"))
-# print(cg.search("Enjin"))
+# print(cg.get_price(ids="internet-computer", vs_currencies="usd"))
+# print(cg.search("Internet Computer"))
