@@ -55,7 +55,7 @@ def reverse_translation(tokens: dict) -> dict:
             del tokens[coin_gecko_token_name]
 
     # Fix the capitalisation
-    for token_name, price in tokens.items():
+    for token_name, price in list(tokens.items()):
         if not token_name.istitle():
             tokens[token_name.title()] = price
             del tokens[token_name]
@@ -70,9 +70,10 @@ def reverse_translation(tokens: dict) -> dict:
         "(Pos) Wrapped Btc": "(PoS) Wrapped BTC",
         "Enjincoin": "EnjinCoin",
         "Aave (Pos)": "Aave (PoS)",
-        "Gmx": "GMX",
-        "uniswap": "Uniswap",
         "wax": "Wax",
+        "Synthetix Network Token (Pos)": "Synthetix Network Token (PoS)",
+        "Loopringcoin V2": "LoopringCoin V2",
+        "Wrapped Btc": "Wrapped BTC",
     }
 
     for wrong_token_format, correct_token_format in unique_names.items():
@@ -84,17 +85,7 @@ def reverse_translation(tokens: dict) -> dict:
 
 
 def get_prices(tokens: list) -> dict:
-    tokens = translate_token_name(tokens)
-    polygon_bitcoin = True if "(PoS) Wrapped BTC" in tokens else False
-
-    prices = cg.get_price(ids=tokens, vs_currencies="usd")
-
-    if polygon_bitcoin:
-        prices["(PoS) Wrapped BTC"] = prices["bitcoin"]
-
-    prices_translated = reverse_translation(prices)
-
-    return prices_translated
+    return cg.get_price(ids=tokens, vs_currencies="usd")
 
 
 # print(cg.get_price(ids="internet-computer", vs_currencies="usd"))
