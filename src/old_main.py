@@ -75,41 +75,41 @@ def main():
     # If I want to specify a few allocations for some particlar tokens e.g.
     # just Bitcoin and XMR, I can allocate the remaining part of the portfolio
     # equally for the remaining assets.
-    allocation_adjustment = df["target_%"].isin([0]).any()
+    # allocation_adjustment = df["target_%"].isin([0]).any()
 
-    if allocation_adjustment:
-        unallocated_tokens = df["target_%"].value_counts()[0]
-        print(
-            f"{unallocated_tokens} tokens require their allocation(s) to be calculated"
-        )
-        remaining_allocation = 100 - df["target_%"].sum()
-        print(f"remaining: {remaining_allocation}%")
-        allocation_per_token = round(remaining_allocation / unallocated_tokens, 4)
-        print(
-            f"Allocating {allocation_per_token}% for remaining {unallocated_tokens} tokens"
-        )
+    # if allocation_adjustment:
+    #     unallocated_tokens = df["target_%"].value_counts()[0]
+    #     print(
+    #         f"{unallocated_tokens} tokens require their allocation(s) to be calculated"
+    #     )
+    #     remaining_allocation = 100 - df["target_%"].sum()
+    #     print(f"remaining: {remaining_allocation}%")
+    #     allocation_per_token = round(remaining_allocation / unallocated_tokens, 4)
+    #     print(
+    #         f"Allocating {allocation_per_token}% for remaining {unallocated_tokens} tokens"
+    #     )
 
-        df["target_%"].replace(0, allocation_per_token, inplace=True)
+    #     df["target_%"].replace(0, allocation_per_token, inplace=True)
 
-    coin_gecko_prices = coingecko.get_prices(df["token"].to_list())
+    # coin_gecko_prices = coingecko.get_prices(df["token"].to_list())
 
-    print(coin_gecko_prices)
+    # print(coin_gecko_prices)
 
-    # Check for missing prices in coin data
-    missing_coins = []
-    for token_name in df["token"].to_list():
-        if token_name not in coin_gecko_prices.keys():
-            missing_coins.append(token_name)
+    # # Check for missing prices in coin data
+    # missing_coins = []
+    # for token_name in df["token"].to_list():
+    #     if token_name not in coin_gecko_prices.keys():
+    #         missing_coins.append(token_name)
 
-    if len(missing_coins) == 0:
-        print("No missing coins, price data good!")
-    else:
-        print("Coins missing from price data!")
-        print(missing_coins)
+    # if len(missing_coins) == 0:
+    #     print("No missing coins, price data good!")
+    # else:
+    #     print("Coins missing from price data!")
+    #     print(missing_coins)
 
-    # Add new price data to the df
-    for index, row in df.iterrows():
-        df.at[index, "price"] = coin_gecko_prices[row["token"]]
+    # # Add new price data to the df
+    # for index, row in df.iterrows():
+    #     df.at[index, "price"] = coin_gecko_prices[row["token"]]
 
     # Calculate current portfolio value in USD
     portfolio_value = (df["balance"] * df["price"]).sum()
