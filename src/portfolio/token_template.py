@@ -1,15 +1,11 @@
+from attrs import define, validators, field
 from pycoingecko import CoinGeckoAPI
-from json import JSONDecodeError
-from attrs import define, field, validators
-from .request_helper import make_http_request
-from .colour_logs import get_colour_logs
 
-logs = get_colour_logs()
 cg = CoinGeckoAPI()
 
 
 @define
-class EthereumToken:
+class TokenTemplate:
     token_name: str = field(validator=[validators.instance_of(str)])
     coingecko_name: str = field(
         validator=[validators.instance_of(str)]
@@ -23,18 +19,6 @@ class EthereumToken:
     allocation: float = field(init=False)  # allocation % in portfolio
     price: float = field(init=False)  # current price of token according to coingecko
     balance: float = field(init=False)  # balance in token_address
-
-    def get_balance(self) -> None:
-        api_url = f"https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
-
-        response = make_http_request(url=api_url, session=True)
-
-        try:
-            data = response.json()
-            self.balance = float(data["result"]) / 10**self.decimals
-        except JSONDecodeError as json_err:
-            logs.error(json_err)
-            raise json_err
 
     def get_price(self) -> None:
         p = cg.get_price(
