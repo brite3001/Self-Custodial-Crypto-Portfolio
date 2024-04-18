@@ -2,7 +2,7 @@ from portfolio.portfolio import Portfolio
 import yaml
 
 # TODO: Bundle the API calls with sessions for blockchain explorers
-# TODO: Make 1 API call to coingecko to get all the price data
+# ~~ TODO: Make 1 API call to coingecko to get all the price data ~~
 # TODO: Modify balancing_advice by adding buy/sell matching functionality to swap tokens, rather than vague BUY or SELL advice.
 # TODO: use rich https://github.com/Textualize/rich for more pretty terminal output
 # TODO: progress bars -> use rich
@@ -25,7 +25,7 @@ def main():
     p.calculate_missing_allocations()
 
     for token in p.tokens:
-        print(f"{token.name} | {token.allocation}")
+        print(f"{token.name} | {token.allocation}%")
 
     p.calculate_portfolio_value()
     print(p.portfolio_value)

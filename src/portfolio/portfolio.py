@@ -1,7 +1,22 @@
 from attrs import define, validators, field
+from pycoingecko import CoinGeckoAPI
 
-from .token_objects import EthereumToken, OptimismToken
+
+from .token_objects import (
+    EthereumToken,
+    OptimismToken,
+    AlgorandToken,
+    ArbitrumToken,
+    BitcoinToken,
+    DecredToken,
+    FluxToken,
+    PolygonToken,
+    SolanaToken,
+    WaxToken,
+)
 from .token_template import TokenTemplate
+
+cg = CoinGeckoAPI()
 
 
 @define
@@ -14,6 +29,14 @@ class Portfolio:
     blockchain_mapping: dict = {
         "ethereum": EthereumToken,
         "optimism": OptimismToken,
+        "algorand": AlgorandToken,
+        "arbitrum": ArbitrumToken,
+        "bitcoin": BitcoinToken,
+        "decred": DecredToken,
+        "flux": FluxToken,
+        "polygon": PolygonToken,
+        "solana": SolanaToken,
+        "wax": WaxToken,
     }
 
     got_balances: bool = False
@@ -30,13 +53,17 @@ class Portfolio:
             token = None
 
             if info["blockchain"] in self.blockchain_mapping:
+                api_key = ""
+                if info["blockchain"] in self.config["api_keys"]:
+                    api_key = self.config["api_keys"][info["blockchain"]]
+
                 token = self.blockchain_mapping[info["blockchain"]](
                     name=name,
                     coingecko_name=info["coingecko_name"],
                     token_address=self.config["addresses"][info["blockchain"]],
                     contract_address=info["contract_address"],
                     decimals=info["decimals"],
-                    api_key=self.config["api_keys"][info["blockchain"]],
+                    api_key=api_key,
                     allocation=allocations[name],
                 )
             else:
@@ -54,8 +81,19 @@ class Portfolio:
         self.got_balances = True
 
     def get_token_prices(self):
+        tokens_pending_prices = []
         for token in self.tokens:
-            token.get_price()
+            tokens_pending_prices.append(token.coingecko_name)
+
+        p = cg.get_price(
+            ids=tokens_pending_prices,
+            vs_currencies="usd",
+        )
+
+        for coingecko_name, price in p.items():
+            for token in self.tokens:
+                if token.coingecko_name == coingecko_name:
+                    token.price = price["usd"]
 
         self.got_prices = True
 

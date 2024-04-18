@@ -1,7 +1,4 @@
 from attrs import define, validators, field
-from pycoingecko import CoinGeckoAPI
-
-cg = CoinGeckoAPI()
 
 
 @define
@@ -30,12 +27,3 @@ class TokenTemplate:
     allocation_delta: float = field(
         init=False
     )  # delta between allocation and actual allocation
-
-    def get_price(self) -> None:
-        p = cg.get_price(
-            ids=self.coingecko_name if self.coingecko_name != "" else self.name,
-            vs_currencies="usd",
-        )
-
-        for _, price in p.items():
-            self.price = price["usd"]
