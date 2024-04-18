@@ -36,6 +36,8 @@ def main():
 
     p.generate_balancing_advice()
 
+    p.pie_chart()
+
 
 if __name__ == "__main__":
     main()

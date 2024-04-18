@@ -170,3 +170,21 @@ class SolanaToken(TokenTemplate):
 
         except JSONDecodeError as json_err:
             logs.error(json_err)
+
+
+@define
+class MoneroToken(TokenTemplate):
+    def get_balance(self) -> None:
+        self.balance = 52
+
+
+@define
+class BeamToken(TokenTemplate):
+    def get_balance(self) -> None:
+        self.balance = 8253
+
+
+@define
+class InternetComputerToken(TokenTemplate):
+    def get_balance(self) -> None:
+        self.balance = 159

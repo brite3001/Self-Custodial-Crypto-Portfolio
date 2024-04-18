@@ -1,6 +1,6 @@
 from attrs import define, validators, field
 from pycoingecko import CoinGeckoAPI
-
+import matplotlib.pyplot as plt
 
 from .token_objects import (
     EthereumToken,
@@ -13,6 +13,9 @@ from .token_objects import (
     PolygonToken,
     SolanaToken,
     WaxToken,
+    MoneroToken,
+    BeamToken,
+    InternetComputerToken,
 )
 from .token_template import TokenTemplate
 
@@ -37,6 +40,9 @@ class Portfolio:
         "polygon": PolygonToken,
         "solana": SolanaToken,
         "wax": WaxToken,
+        "monero": MoneroToken,
+        "beam": BeamToken,
+        "internet_computer": InternetComputerToken,
     }
 
     got_balances: bool = False
@@ -49,11 +55,11 @@ class Portfolio:
 
     def init_portfolio(self):
         allocations = self.config["allocations"]
+        api_key = ""
         for name, info in self.config["tokens"].items():
             token = None
 
             if info["blockchain"] in self.blockchain_mapping:
-                api_key = ""
                 if info["blockchain"] in self.config["api_keys"]:
                     api_key = self.config["api_keys"][info["blockchain"]]
 
@@ -160,3 +166,22 @@ class Portfolio:
                 print(
                     f"SELL ${delta_in_usd} ({-(delta_in_usd / token.price)}) worth of {token.name} (delta = {token.allocation_delta})"
                 )
+
+    def pie_chart(self):
+        labels = []
+        target_percentages = []
+        current_percentages = []
+
+        for token in self.tokens:
+            labels.append(token.name)
+            target_percentages.append(token.allocation)
+            current_percentages.append(token.actual_allocation)
+
+        fig, (ax1, ax2) = plt.subplots(ncols=2)
+        ax1.pie(target_percentages, labels=labels, autopct="%.2f%%")
+        ax1.set_title("Target Allocations")
+
+        ax2.pie(current_percentages, labels=labels, autopct="%.2f%%")
+        ax2.set_title("Current Allocations")
+
+        plt.show()
