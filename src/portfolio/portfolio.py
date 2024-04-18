@@ -168,6 +168,12 @@ class Portfolio:
                 )
 
     def pie_chart(self):
+        assert self.portfolio_value > 0
+        assert self.got_balances
+        assert self.got_prices
+        assert self.got_actual_allocation
+        assert self.got_allocation_delta
+
         labels = []
         target_percentages = []
         current_percentages = []
