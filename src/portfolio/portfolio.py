@@ -18,6 +18,8 @@ from .token_objects import (
     InternetComputerToken,
     MinaProtocolToken,
     NeonEVMToken,
+    Ethereum,
+    HoirzenToken,
 )
 from .token_template import TokenTemplate
 
@@ -47,6 +49,8 @@ class Portfolio:
         "internet_computer": InternetComputerToken,
         "mina_protocol": MinaProtocolToken,
         "neon_evm": NeonEVMToken,
+        "eth": Ethereum,
+        "horizen": HoirzenToken,
     }
 
     got_balances: bool = False
@@ -160,7 +164,9 @@ class Portfolio:
         assert self.got_actual_allocation
         assert self.got_allocation_delta
 
-        for token in self.tokens:
+        sorted_smallest = sorted(self.tokens, key=lambda x: x.allocation_delta)
+
+        for token in sorted_smallest[:5] + sorted_smallest[-5:]:
             delta_in_usd = token.allocation_delta * self.portfolio_value
             if token.allocation_delta > 0:
                 print(

@@ -209,3 +209,15 @@ class InternetComputerToken(TokenTemplate):
 class NeonEVMToken(TokenTemplate):
     def get_balance(self) -> None:
         self.balance = 364.0
+
+
+@define
+class HoirzenToken(TokenTemplate):
+    def get_balance(self) -> None:
+        self.balance = 512.0
+
+
+@define
+class Ethereum(TokenTemplate):
+    def get_balance(self) -> None:
+        self.balance = 36.5
