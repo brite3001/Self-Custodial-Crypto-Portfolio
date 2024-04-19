@@ -79,7 +79,7 @@ class AlgorandToken(TokenTemplate):
 
         try:
             data = response.json()
-            self.balance = data["amount"] / 10**self.decimals
+            self.balance = float(data["amount"] / 10**self.decimals)
         except JSONDecodeError as json_err:
             logs.error(json_err)
             raise json_err
@@ -94,7 +94,7 @@ class BitcoinToken(TokenTemplate):
 
         try:
             data = response.json()
-            self.balance = data["final_balance"] / 10**self.decimals
+            self.balance = float(data["final_balance"] / 10**self.decimals)
         except JSONDecodeError as json_err:
             logs.error(json_err)
             raise json_err
@@ -109,7 +109,7 @@ class DecredToken(TokenTemplate):
 
         try:
             data = response.json()
-            self.balance = data["dcr_unspent"]
+            self.balance = float(data["dcr_unspent"])
         except JSONDecodeError as json_err:
             logs.error(json_err)
             raise json_err
@@ -124,7 +124,23 @@ class FluxToken(TokenTemplate):
 
         try:
             data = response.json()
-            self.balance = data["data"] / 10**self.decimals
+            self.balance = float(data["data"] / 10**self.decimals)
+        except JSONDecodeError as json_err:
+            logs.error(json_err)
+            raise json_err
+
+
+@define
+class MinaProtocolToken(TokenTemplate):
+    def get_balance(self) -> None:
+        api_url = f"https://api.minaexplorer.com/accounts/{self.token_address}"
+
+        response = make_http_request(url=api_url, session=False)
+
+        try:
+            data = response.json()
+            self.balance = float(data["account"]["balance"]["total"])
+
         except JSONDecodeError as json_err:
             logs.error(json_err)
             raise json_err
@@ -151,9 +167,9 @@ class SolanaToken(TokenTemplate):
     def get_balance(self) -> None:
         rpc_url = "https://api.mainnet-beta.solana.com/"
 
-        tokens = {}
+        payload = {}
 
-        # Create a JSON-RPC request to get the balance.
+        # Query for Solana
         payload = {
             "jsonrpc": "2.0",
             "id": 1,
@@ -165,8 +181,7 @@ class SolanaToken(TokenTemplate):
             response = requests.post(rpc_url, json=payload)
             response.raise_for_status()
             data = response.json()
-            self.balance = data["result"]["value"] / 10**9
-            return tokens
+            self.balance = float(data["result"]["value"] / 10**9)
 
         except JSONDecodeError as json_err:
             logs.error(json_err)
@@ -175,16 +190,22 @@ class SolanaToken(TokenTemplate):
 @define
 class MoneroToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 52
+        self.balance = 52.0
 
 
 @define
 class BeamToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 8253
+        self.balance = 8253.0
 
 
 @define
 class InternetComputerToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 159
+        self.balance = 159.0
+
+
+@define
+class NeonEVMToken(TokenTemplate):
+    def get_balance(self) -> None:
+        self.balance = 364.0

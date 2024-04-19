@@ -16,6 +16,8 @@ from .token_objects import (
     MoneroToken,
     BeamToken,
     InternetComputerToken,
+    MinaProtocolToken,
+    NeonEVMToken,
 )
 from .token_template import TokenTemplate
 
@@ -25,7 +27,7 @@ cg = CoinGeckoAPI()
 @define
 class Portfolio:
     config: dict = field(validator=[validators.instance_of(dict)])
-    tokens: list[TokenTemplate] = []
+    tokens: list[TokenTemplate] = field(factory=list)
 
     portfolio_value: float = 0
 
@@ -43,6 +45,8 @@ class Portfolio:
         "monero": MoneroToken,
         "beam": BeamToken,
         "internet_computer": InternetComputerToken,
+        "mina_protocol": MinaProtocolToken,
+        "neon_evm": NeonEVMToken,
     }
 
     got_balances: bool = False
