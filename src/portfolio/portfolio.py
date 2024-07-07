@@ -20,6 +20,8 @@ from .token_objects import (
     NeonEVMToken,
     Ethereum,
     HoirzenToken,
+    EnjinCoinToken,
+    FiroToken,
 )
 from .token_template import TokenTemplate
 
@@ -51,6 +53,8 @@ class Portfolio:
         "neon_evm": NeonEVMToken,
         "eth": Ethereum,
         "horizen": HoirzenToken,
+        "enjin_coin": EnjinCoinToken,
+        "firo": FiroToken,
     }
 
     got_balances: bool = False

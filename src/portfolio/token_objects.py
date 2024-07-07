@@ -147,6 +147,51 @@ class MinaProtocolToken(TokenTemplate):
 
 
 @define
+class FiroToken(TokenTemplate):
+    # https://github.com/firoorg/insight-api-firo
+    def get_balance(self) -> None:
+        api_url = f"https://explorer.firo.org/insight-api-zcoin/addr/{self.token_address}/balance"
+
+        response = make_http_request(url=api_url, session=False)
+
+        try:
+            data = response.json()
+            print(data)
+            self.balance = float(data / 10**self.decimals)
+
+        except JSONDecodeError as json_err:
+            logs.error(json_err)
+            raise json_err
+
+
+@define
+class EnjinCoinToken(TokenTemplate):
+    def get_balance(self) -> None:
+        url = "https://matrix.api.subscan.io/api/scan/account/tokens"
+        headers = {
+            "Content-Type": "application/json",
+            # 'X-API-Key': api_key
+        }
+        payload = {"address": self.token_address}
+
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            if response.status_code == 200:
+                data = response.json()
+                self.balance = (
+                    int(data["data"]["native"][0]["balance"]) / 10**self.decimals
+                )
+            else:
+                print(
+                    f"Failed to retrieve balance. Status code: {response.status_code}"
+                )
+                return None
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching balance: {e}")
+            return None
+
+
+@define
 class WaxToken(TokenTemplate):
     def get_balance(self) -> None:
         api_url = "https://api.wax.alohaeos.com/v1/chain/get_account"
@@ -190,13 +235,13 @@ class SolanaToken(TokenTemplate):
 @define
 class MoneroToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 52.0
+        self.balance = 45.87
 
 
 @define
 class BeamToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 8253.0
+        self.balance = 14510
 
 
 @define
@@ -208,7 +253,7 @@ class InternetComputerToken(TokenTemplate):
 @define
 class NeonEVMToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 364.0
+        self.balance = 1043
 
 
 @define
