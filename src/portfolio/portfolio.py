@@ -17,11 +17,11 @@ from .token_objects import (
     BeamToken,
     InternetComputerToken,
     MinaProtocolToken,
-    NeonEVMToken,
     Ethereum,
     HoirzenToken,
     EnjinCoinToken,
     FiroToken,
+    DogeCoinToken,
 )
 from .token_template import TokenTemplate
 
@@ -50,11 +50,11 @@ class Portfolio:
         "beam": BeamToken,
         "internet_computer": InternetComputerToken,
         "mina_protocol": MinaProtocolToken,
-        "neon_evm": NeonEVMToken,
         "eth": Ethereum,
         "horizen": HoirzenToken,
         "enjin_coin": EnjinCoinToken,
         "firo": FiroToken,
+        "dogecoin": DogeCoinToken,
     }
 
     got_balances: bool = False
@@ -73,7 +73,8 @@ class Portfolio:
 
             if info["blockchain"] in self.blockchain_mapping:
                 if info["blockchain"] in self.config["api_keys"]:
-                    api_key = self.config["api_keys"][info["blockchain"]]
+                    # hardcoded to use ethereum API key per etherscan V2 changes
+                    api_key = self.config["api_keys"]["ethereum"]
 
                 token = self.blockchain_mapping[info["blockchain"]](
                     name=name,

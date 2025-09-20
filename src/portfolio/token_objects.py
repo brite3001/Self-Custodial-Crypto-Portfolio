@@ -12,7 +12,7 @@ logs = get_colour_logs()
 @define
 class EthereumToken(TokenTemplate):
     def get_balance(self) -> None:
-        api_url = f"https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
+        api_url = f"https://api.etherscan.io/v2/api?chainid=1&module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
 
         response = make_http_request(url=api_url, session=True)
 
@@ -27,7 +27,7 @@ class EthereumToken(TokenTemplate):
 @define
 class OptimismToken(TokenTemplate):
     def get_balance(self) -> None:
-        api_url = f"https://api-optimistic.etherscan.io/api?module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
+        api_url = f"https://api.etherscan.io/v2/api?chainid=10&module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
 
         response = make_http_request(url=api_url, session=True)
 
@@ -42,7 +42,7 @@ class OptimismToken(TokenTemplate):
 @define
 class ArbitrumToken(TokenTemplate):
     def get_balance(self) -> None:
-        api_url = f"https://api.arbiscan.io/api?module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
+        api_url = f"https://api.etherscan.io/v2/api?chainid=42161&module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
 
         response = make_http_request(url=api_url, session=True)
 
@@ -57,7 +57,7 @@ class ArbitrumToken(TokenTemplate):
 @define
 class PolygonToken(TokenTemplate):
     def get_balance(self) -> None:
-        api_url = f"https://api.polygonscan.com/api?module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
+        api_url = f"https://api.etherscan.io/v2/api?chainid=137&module=account&action=tokenbalance&contractaddress={self.contract_address}&address={self.token_address}&tag=latest&apikey={self.api_key}"
 
         response = make_http_request(url=api_url, session=True)
 
@@ -144,6 +144,7 @@ class MinaProtocolToken(TokenTemplate):
         except JSONDecodeError as json_err:
             logs.error(json_err)
             raise json_err
+        # self.balance = 3357
 
 
 @define
@@ -233,36 +234,36 @@ class SolanaToken(TokenTemplate):
 
 
 @define
+class DogeCoinToken(TokenTemplate):
+    def get_balance(self) -> None:
+        self.balance = 0
+
+
+@define
 class MoneroToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 45.87
+        self.balance = 0
 
 
 @define
 class BeamToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 14510
+        self.balance = 0
 
 
 @define
 class InternetComputerToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 159.0
-
-
-@define
-class NeonEVMToken(TokenTemplate):
-    def get_balance(self) -> None:
-        self.balance = 1043
+        self.balance = 0
 
 
 @define
 class HoirzenToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 512.0
+        self.balance = 0
 
 
 @define
 class Ethereum(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 36.5
+        self.balance = 0
