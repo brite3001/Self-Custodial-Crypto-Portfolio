@@ -76,22 +76,24 @@ class Portfolio:
                     # hardcoded to use ethereum API key per etherscan V2 changes
                     api_key = self.config["api_keys"]["ethereum"]
 
-                token = self.blockchain_mapping[info["blockchain"]](
-                    name=name,
-                    coingecko_name=info["coingecko_name"],
-                    token_address=self.config["addresses"][info["blockchain"]],
-                    contract_address=info["contract_address"],
-                    decimals=info["decimals"],
-                    api_key=api_key,
-                    allocation=allocations[name],
-                )
+                if name in allocations:
+                    token = self.blockchain_mapping[info["blockchain"]](
+                        name=name,
+                        coingecko_name=info["coingecko_name"],
+                        token_address=self.config["addresses"][info["blockchain"]],
+                        contract_address=info["contract_address"],
+                        decimals=info["decimals"],
+                        api_key=api_key,
+                        allocation=allocations[name],
+                    )
             else:
                 print(f"Blockchain {info['blockchain']} hasnt been implemented yet")
 
             if token is not None:
                 self.tokens.append(token)
             else:
-                print(f"Token {name} not added")
+                pass
+                # print(f"Token {name} not added")
 
     def get_token_balances(self):
         for token in self.tokens:
