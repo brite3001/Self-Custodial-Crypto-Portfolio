@@ -27,3 +27,5 @@ class TokenTemplate:
     allocation_delta: float = field(
         init=False
     )  # delta between allocation and actual allocation
+
+    price_change_24hr: float = field(init=False)

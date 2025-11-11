@@ -2,6 +2,7 @@ ntfy:
   domain: "http://xxx"
   api_key: "tk_xxx"
   sell_target: 123
+  price_change_alert: 20
 
   manual_balance:
     dogecoin: 1234

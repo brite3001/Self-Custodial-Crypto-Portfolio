@@ -109,14 +109,14 @@ class Portfolio:
             tokens_pending_prices.append(token.coingecko_name)
 
         p = cg.get_price(
-            ids=tokens_pending_prices,
-            vs_currencies="usd",
+            ids=tokens_pending_prices, vs_currencies="usd", include_24hr_change="true"
         )
 
         for coingecko_name, price in p.items():
             for token in self.tokens:
                 if token.coingecko_name == coingecko_name:
                     token.price = price["usd"]
+                    token.price_change_24hr = price["usd_24h_change"]
 
         self.got_prices = True
 
@@ -222,7 +222,7 @@ class Portfolio:
         distance_percentage = round((total_value / sell_target) * 100, 2)
         distance_usd = round(sell_target - total_value, 2)
         requests.post(
-            url,
+            url + "portfolio",
             data=f"""Crypto Portfolio 📊
 
         Total portfoilo value: ${round(total_value, 2)} USD
@@ -231,3 +231,19 @@ class Portfolio:
         Out of balance by {round(self.total_delta, 4) * 100}%""".encode("utf-8"),
             headers={"Authorization": f"Bearer {api_key}"},
         )
+
+    def token_price_alerts(self, url: str, api_key: str, alert_threshold: int) -> None:
+        data = ""
+
+        for token in self.tokens:
+            if token.price_change_24hr >= alert_threshold:
+                data += f"{token.name} has increased by {round(token.price_change_24hr, 2)}%\n"
+            if token.price_change_24hr <= -alert_threshold:
+                data += f"{token.name} has decreased by {round(token.price_change_24hr, 2)}%\n"
+
+        if data:
+            requests.post(
+                url + "price_alert",
+                data=data.encode("utf-8"),
+                headers={"Authorization": f"Bearer {api_key}"},
+            )

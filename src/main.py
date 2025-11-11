@@ -43,6 +43,12 @@ def main():
         config["ntfy"]["sell_target"],
     )
 
+    p.token_price_alerts(
+        config["ntfy"]["domain"],
+        config["ntfy"]["api_key"],
+        config["ntfy"]["sell_target"],
+    )
+
     print(
         f"TOTAL PORTFOLIO VALUE: {p.portfolio_value + p_cold.portfolio_value} HOT ({p.portfolio_value}) COLD ({p_cold.portfolio_value})"
     )
