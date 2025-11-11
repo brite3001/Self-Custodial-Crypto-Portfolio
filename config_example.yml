@@ -3,6 +3,11 @@ ntfy:
   api_key: "tk_xxx"
   sell_target: 123
 
+  manual_balance:
+    dogecoin: 1234
+    monero: 12.3
+    ethereum: 1.23
+
 # addresses for the tokens on each blockchain and L2
 addresses:
   ethereum: "xxx"

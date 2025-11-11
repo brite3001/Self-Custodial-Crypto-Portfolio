@@ -1,12 +1,16 @@
 from json import JSONDecodeError
 from attrs import define
 import requests
+import yaml
 
 from .request_helper import make_http_request
 from .colour_logs import get_colour_logs
 from .token_template import TokenTemplate
 
 logs = get_colour_logs()
+
+with open("config.yml", "r") as yaml_file:
+    config = yaml.safe_load(yaml_file)
 
 
 @define
@@ -236,13 +240,13 @@ class SolanaToken(TokenTemplate):
 @define
 class DogeCoinToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 0
+        self.balance = config["manual_balance"]["dogecoin"]
 
 
 @define
 class MoneroToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 0
+        self.balance = config["manual_balance"]["monero"]
 
 
 @define
@@ -266,4 +270,4 @@ class HoirzenToken(TokenTemplate):
 @define
 class Ethereum(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = 0
+        self.balance = config["manual_balance"]["ethereum"]
