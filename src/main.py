@@ -26,7 +26,7 @@ def main():
 
     p.generate_balancing_advice()
 
-    p.pie_chart()
+    chart_buffer = p.pie_chart()
 
     with open("cold_config.yml", "r") as yaml_file:
         cold_config = yaml.safe_load(yaml_file)
@@ -42,6 +42,10 @@ def main():
         p.portfolio_value + p_cold.portfolio_value,
         config["ntfy"]["sell_target"],
     )
+
+    # p.send_portfolio_charts(
+    #     config["ntfy"]["domain"], config["ntfy"]["api_key"], chart_buffer
+    # )
 
     p.token_price_alerts(
         config["ntfy"]["domain"],
