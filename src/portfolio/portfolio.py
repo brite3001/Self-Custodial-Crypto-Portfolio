@@ -1,6 +1,7 @@
 from attrs import define, validators, field
 from pycoingecko import CoinGeckoAPI
 import matplotlib.pyplot as plt
+import requests
 
 from .token_objects import (
     EthereumToken,
@@ -32,6 +33,7 @@ cg = CoinGeckoAPI()
 class Portfolio:
     config: dict = field(validator=[validators.instance_of(dict)])
     tokens: list[TokenTemplate] = field(factory=list)
+    total_delta: int = field(factory=int)
 
     portfolio_value: float = 0
 
@@ -171,9 +173,9 @@ class Portfolio:
         assert self.got_actual_allocation
         assert self.got_allocation_delta
 
-        sorted_smallest = sorted(self.tokens, key=lambda x: x.allocation_delta)
+        # sorted_smallest = sorted(self.tokens, key=lambda x: x.allocation_delta)
 
-        for token in sorted_smallest[:5] + sorted_smallest[-5:]:
+        for token in self.tokens:
             delta_in_usd = token.allocation_delta * self.portfolio_value
             if token.allocation_delta > 0:
                 print(
@@ -183,6 +185,11 @@ class Portfolio:
                 print(
                     f"SELL ${delta_in_usd} ({-(delta_in_usd / token.price)}) worth of {token.name} (delta = {token.allocation_delta})"
                 )
+            self.total_delta += (
+                token.allocation_delta if token.allocation_delta > 0 else 0
+            )
+
+        print(f"Portfolio is out of balance by {self.total_delta * 100}%")
 
     def pie_chart(self):
         assert self.portfolio_value > 0
@@ -208,3 +215,19 @@ class Portfolio:
         ax2.set_title("Current Allocations")
 
         plt.show()
+
+    def send_portfolio_notification(
+        self, url: str, api_key: str, total_value: float, sell_target: int
+    ) -> None:
+        distance_percentage = round((total_value / sell_target) * 100, 2)
+        distance_usd = round(sell_target - total_value, 2)
+        requests.post(
+            url,
+            data=f"""Crypto Portfolio 📊
+
+        Total portfoilo value: ${round(total_value, 2)} USD
+        Distance from sell target {distance_percentage}%
+        Distance from sell target ${distance_usd} USD
+        Out of balance by {round(self.total_delta, 4) * 100}%""".encode("utf-8"),
+            headers={"Authorization": f"Bearer {api_key}"},
+        )
