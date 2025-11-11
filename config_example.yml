@@ -1,3 +1,8 @@
+ntfy:
+  domain: "http://xxx"
+  api_key: "tk_xxx"
+  sell_target: 123
+
 # addresses for the tokens on each blockchain and L2
 addresses:
   ethereum: "xxx"
