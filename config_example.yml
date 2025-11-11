@@ -17,9 +17,6 @@ addresses:
 # API keys for each block explorer
 api_keys:
   ethereum: "xxx"
-  polygon: "xxx"
-  optimism: "xxx"
-  arbitrum: "xxx"
 
 # Arbitrum Tokens
 arbitrum_Whitelist:
