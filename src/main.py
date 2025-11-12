@@ -1,8 +1,11 @@
 from portfolio.portfolio import Portfolio
 import yaml
+import schedule
+import time
 
 
 def main():
+    print("Running portfolio job")
     with open("config.yml", "r") as yaml_file:
         config = yaml.safe_load(yaml_file)
         p = Portfolio(config=config)
@@ -54,5 +57,9 @@ def main():
     )
 
 
+schedule.every().day.at("9:00", "Australia/Victoria").do(main)
+
 if __name__ == "__main__":
-    main()
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
