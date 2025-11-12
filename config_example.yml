@@ -1,13 +1,15 @@
 ntfy:
+  enabled: True
   domain: "http://xxx"
   api_key: "tk_xxx"
   sell_target: 123
-  price_change_alert: 20
+  alert_threshold: 20
+  balance_threshold: 5
 
-  manual_balance:
-    dogecoin: 1234
-    monero: 12.3
-    ethereum: 1.23
+manual_balance:
+  dogecoin: 1234
+  monero: 12.3
+  ethereum: 1.23
 
 # addresses for the tokens on each blockchain and L2
 addresses:

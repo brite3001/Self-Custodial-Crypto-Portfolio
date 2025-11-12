@@ -39,25 +39,34 @@ def main():
     p_cold.get_token_prices()
     p_cold.calculate_portfolio_value()
 
-    p.send_portfolio_notification(
-        config["ntfy"]["domain"],
-        config["ntfy"]["api_key"],
-        p.portfolio_value + p_cold.portfolio_value,
-        config["ntfy"]["sell_target"],
-    )
+    if config["ntfy"]["enabled"]:
+        print("Sending portfolio notification")
+        p.send_portfolio_notification(
+            config["ntfy"]["domain"],
+            config["ntfy"]["api_key"],
+            p.portfolio_value + p_cold.portfolio_value,
+            config["ntfy"]["sell_target"],
+        )
 
-    p.token_price_alerts(
-        config["ntfy"]["domain"],
-        config["ntfy"]["api_key"],
-        config["ntfy"]["sell_target"],
-    )
+        print("Sending price alerts (if any)")
+        p.send_price_alerts(
+            config["ntfy"]["domain"],
+            config["ntfy"]["api_key"],
+            config["ntfy"]["alert_threshold"],
+        )
+
+        p.send_balance_advice(
+            config["ntfy"]["domain"],
+            config["ntfy"]["api_key"],
+            config["ntfy"]["balance_threshold"],
+        )
 
     print(
         f"TOTAL PORTFOLIO VALUE: {p.portfolio_value + p_cold.portfolio_value} HOT ({p.portfolio_value}) COLD ({p_cold.portfolio_value})"
     )
 
 
-schedule.every().day.at("9:00", "Australia/Victoria").do(main)
+schedule.every().day.at("09:00", "Australia/Victoria").do(main)
 
 if __name__ == "__main__":
     while True:

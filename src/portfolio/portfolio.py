@@ -35,6 +35,7 @@ class Portfolio:
     config: dict = field(validator=[validators.instance_of(dict)])
     tokens: list[TokenTemplate] = field(factory=list)
     total_delta: int = field(factory=int)
+    advice_string: str = field(factory=str)
 
     portfolio_value: float = 0
 
@@ -179,18 +180,17 @@ class Portfolio:
         for token in self.tokens:
             delta_in_usd = token.allocation_delta * self.portfolio_value
             if token.allocation_delta > 0:
-                print(
-                    f"BUY ${delta_in_usd} ({delta_in_usd / token.price}) worth of {token.name} (delta = {token.allocation_delta})"
-                )
+                self.advice_string += f"BUY ${int(delta_in_usd)} ({round(delta_in_usd / token.price, 2)}) worth of {token.name} {round(token.allocation_delta * 100, 2)}%\n"
+
             else:
-                print(
-                    f"SELL ${delta_in_usd} ({-(delta_in_usd / token.price)}) worth of {token.name} (delta = {token.allocation_delta})"
-                )
+                self.advice_string += f"SELL ${int(delta_in_usd)} ({-(round(delta_in_usd / token.price, 2))}) worth of {token.name} {round(token.allocation_delta * 100, 2)}%\n"
+
             self.total_delta += (
                 token.allocation_delta if token.allocation_delta > 0 else 0
             )
 
-        print(f"Portfolio is out of balance by {self.total_delta * 100}%")
+        print(self.advice_string)
+        print(f"Portfolio is out of balance by {round(self.total_delta * 100, 2)}%")
 
     def pie_chart(self, show_charts: bool) -> None:
         assert self.portfolio_value > 0
@@ -234,7 +234,7 @@ class Portfolio:
             headers={"Authorization": f"Bearer {api_key}"},
         )
 
-    def token_price_alerts(self, url: str, api_key: str, alert_threshold: int) -> None:
+    def send_price_alerts(self, url: str, api_key: str, alert_threshold: int) -> None:
         data = ""
 
         for token in self.tokens:
@@ -247,5 +247,15 @@ class Portfolio:
             requests.post(
                 url + "price_alert",
                 data=data.encode("utf-8"),
+                headers={"Authorization": f"Bearer {api_key}"},
+            )
+
+    def send_balance_advice(
+        self, url: str, api_key: str, balance_threshold: int
+    ) -> None:
+        if self.total_delta * 100 >= balance_threshold:
+            requests.post(
+                url + "balance_advice",
+                data=self.advice_string.encode("utf-8"),
                 headers={"Authorization": f"Bearer {api_key}"},
             )
