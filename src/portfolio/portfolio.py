@@ -192,7 +192,7 @@ class Portfolio:
 
         print(f"Portfolio is out of balance by {self.total_delta * 100}%")
 
-    def pie_chart(self):
+    def pie_chart(self, show_charts: bool) -> None:
         assert self.portfolio_value > 0
         assert self.got_balances
         assert self.got_prices
@@ -215,11 +215,8 @@ class Portfolio:
         ax2.pie(current_percentages, labels=labels, autopct="%.2f%%")
         ax2.set_title("Current Allocations")
 
-        # plt.show()
-
-        buf = io.BytesIO()
-        fig.savefig(buf, format="png", bbox_inches="tight")
-        return buf.seek(0)
+        if show_charts:
+            plt.show()
 
     def send_portfolio_notification(
         self, url: str, api_key: str, total_value: float, sell_target: int
@@ -235,18 +232,6 @@ class Portfolio:
         Distance from sell target ${distance_usd} USD
         Out of balance by {round(self.total_delta, 4) * 100}%""".encode("utf-8"),
             headers={"Authorization": f"Bearer {api_key}"},
-        )
-
-    def send_portfolio_charts(
-        self, url: str, api_key: str, chart_buffer: io.BytesIO
-    ) -> None:
-        requests.put(
-            url + "portfolio_charts",
-            data=chart_buffer,
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Filename": "allocations.png",
-            },
         )
 
     def token_price_alerts(self, url: str, api_key: str, alert_threshold: int) -> None:

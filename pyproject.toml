@@ -1,7 +1,7 @@
 [project]
-name = ""
-version = ""
-description = ""
+name = "Self-Custodial-Crypto-Portfolio"
+version = "0.1"
+description = "self custody the assets in your cryptocurrency portfolio"
 authors = [
     {name = "brite3000", email = "zac@auhl.dev"},
 ]
