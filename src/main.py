@@ -71,4 +71,5 @@ schedule.every().day.at("09:00", "Australia/Victoria").do(main)
 if __name__ == "__main__":
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        print("sleep...")
+        time.sleep(10)
