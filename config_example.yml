@@ -24,7 +24,8 @@ addresses:
 
 # API keys for each block explorer
 api_keys:
-  ethereum: "xxx"
+  ethereum: "xxx" # uses etherscan
+  dogecoin: "xxx" # uses cryptoapis.io
 
 # Arbitrum Tokens
 arbitrum_Whitelist:

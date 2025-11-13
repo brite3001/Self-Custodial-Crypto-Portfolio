@@ -23,7 +23,7 @@ from .token_objects import (
     HoirzenToken,
     EnjinCoinToken,
     FiroToken,
-    DogeCoinToken,
+    DogecoinToken,
 )
 from .token_template import TokenTemplate
 
@@ -58,7 +58,7 @@ class Portfolio:
         "horizen": HoirzenToken,
         "enjin_coin": EnjinCoinToken,
         "firo": FiroToken,
-        "dogecoin": DogeCoinToken,
+        "dogecoin": DogecoinToken,
     }
 
     got_balances: bool = False
@@ -77,8 +77,7 @@ class Portfolio:
 
             if info["blockchain"] in self.blockchain_mapping:
                 if info["blockchain"] in self.config["api_keys"]:
-                    # hardcoded to use ethereum API key per etherscan V2 changes
-                    api_key = self.config["api_keys"]["ethereum"]
+                    api_key = self.config["api_keys"][info["blockchain"]]
 
                 if name in allocations:
                     token = self.blockchain_mapping[info["blockchain"]](

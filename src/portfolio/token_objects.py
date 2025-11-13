@@ -238,9 +238,19 @@ class SolanaToken(TokenTemplate):
 
 
 @define
-class DogeCoinToken(TokenTemplate):
+class DogecoinToken(TokenTemplate):
     def get_balance(self) -> None:
-        self.balance = config["manual_balance"]["dogecoin"]
+        api_url = f"https://rest.cryptoapis.io/v2/addresses-latest/utxo/dogecoin/mainnet/{self.token_address}/balance"
+
+        headers = {"X-API-Key": self.api_key}
+        response = make_http_request(url=api_url, session=True, headers=headers)
+
+        try:
+            data = response.json()
+            self.balance = float(data["data"]["item"]["confirmedBalance"]["amount"])
+        except JSONDecodeError as json_err:
+            logs.error(json_err)
+            raise json_err
 
 
 @define
