@@ -215,26 +215,28 @@ class WaxToken(TokenTemplate):
 @define
 class SolanaToken(TokenTemplate):
     def get_balance(self) -> None:
-        rpc_url = "https://api.mainnet-beta.solana.com/"
+        rpc_url = "https://solana-rpc.publicnode.com"
 
-        payload = {}
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-        # Query for Solana
         payload = {
             "jsonrpc": "2.0",
             "id": 1,
             "method": "getBalance",
-            "params": [self.token_address],
+            "params": [self.token_address]
         }
 
         try:
-            response = requests.post(rpc_url, json=payload)
+            response = requests.post(rpc_url, headers=headers, json=payload)
             response.raise_for_status()
             data = response.json()
             self.balance = float(data["result"]["value"] / 10**9)
 
         except JSONDecodeError as json_err:
             logs.error(json_err)
+
 
 
 @define
