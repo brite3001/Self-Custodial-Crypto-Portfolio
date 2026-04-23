@@ -217,15 +217,13 @@ class SolanaToken(TokenTemplate):
     def get_balance(self) -> None:
         rpc_url = "https://solana-rpc.publicnode.com"
 
-        headers = {
-            "Content-Type": "application/json"
-        }
+        headers = {"Content-Type": "application/json"}
 
         payload = {
             "jsonrpc": "2.0",
             "id": 1,
             "method": "getBalance",
-            "params": [self.token_address]
+            "params": [self.token_address],
         }
 
         try:
@@ -238,11 +236,10 @@ class SolanaToken(TokenTemplate):
             logs.error(json_err)
 
 
-
 @define
 class DogecoinToken(TokenTemplate):
     def get_balance(self) -> None:
-        api_url = f"https://rest.cryptoapis.io/v2/addresses-latest/utxo/dogecoin/mainnet/{self.token_address}/balance"
+        api_url = f"https://rest.cryptoapis.io/addresses-latest/utxo/dogecoin/mainnet/{self.token_address}/balance"
 
         headers = {"X-API-Key": self.api_key}
         response = make_http_request(url=api_url, session=True, headers=headers)
