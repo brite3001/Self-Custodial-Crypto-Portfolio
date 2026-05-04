@@ -2,7 +2,6 @@ from attrs import define, validators, field
 from pycoingecko import CoinGeckoAPI
 import matplotlib.pyplot as plt
 import requests
-import io
 
 from .token_objects import (
     EthereumToken,
