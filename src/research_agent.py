@@ -53,7 +53,7 @@ def portfolio_research(tokens: list[TokenTemplate]):
         "providerId": provider_id,
         "key": model_name
             },
-        "optimizationMode": "speed",
+        "optimizationMode": "balanced",
         "sources": ["web"],
         "query": "What happened this week in xxx?",
         "systemInstructions": system_prompt,
@@ -100,8 +100,11 @@ def portfolio_research(tokens: list[TokenTemplate]):
             headers={"Authorization": f"Bearer {api_key}"},
         )
 
-    for token in tokens:
-        token_research(token.name)
+    # for token in tokens:
+    #     token_research(token.name)
+
+    for token in ['Solana', 'Ethereum']:
+        token_research(token)
     
     aaa = build_portfolio_report()
 
