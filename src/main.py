@@ -3,7 +3,7 @@ import yaml
 import schedule
 import time
 import datetime
-from research_agent import portfolio_research
+# from research_agent import portfolio_research
 
 
 def main():
@@ -66,11 +66,11 @@ def main():
             config["ntfy"]["balance_threshold"],
         )
 
-    if config['portfolio_report']['enabled']:
-        # create report every friday
-        # zero indexed from monday
-        if day_int == 1:
-            portfolio_research(p.tokens + p_cold.tokens)
+    # if config['portfolio_report']['enabled']:
+    #     # create report every friday
+    #     # zero indexed from monday
+    #     if day_int == 1:
+    #         portfolio_research(p.tokens + p_cold.tokens)
 
 
 
@@ -86,7 +86,7 @@ schedule.every().day.at("09:00", "Australia/Victoria").do(main)
 
 if __name__ == "__main__":
     main()
-    # while True:
-    #     schedule.run_pending()
-    #     print("sleep...")
-    #     time.sleep(10)
+    while True:
+        schedule.run_pending()
+        print("sleep...")
+        time.sleep(10)
